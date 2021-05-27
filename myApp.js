@@ -16,7 +16,7 @@ const personSchema = new mongoose.Schema({
     type: Number
   },
   favoriteFoods: {
-    type: Array
+    type: [String]
   }
 })
 
@@ -59,8 +59,13 @@ const findPersonById = (personId, done) => {
 
 const findEditThenSave = (personId, done) => {
   const foodToAdd = "hamburger";
+  Person.findById({_id: personId}, (err, person) => {
+    person.favoriteFoods.push(foodToAdd)
+    person.save((err, data) => {
+      done(null, data);
+    })
+  })
 
-  done(null /*, data*/);
 };
 
 const findAndUpdate = (personName, done) => {
